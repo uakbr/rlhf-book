@@ -1,0 +1,1 @@
+What changes are necessary and needed to convert this RLHF book to an Azure whitepaper for Sentinel instead? Be very thorough. List ALL of everything.
