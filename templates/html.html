@@ -5,154 +5,168 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <link rel="shortcut icon" type="image/png" href="favicon.png" />
-
-  <!-- Open Graph metadata -->
   <meta property="og:image" content="images/sentinel-share.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:title" content="Modernizing Security Operations with Microsoft Sentinel" />
   <meta property="og:description" content="Executive and technical guidance for deploying Microsoft Sentinel." />
   <meta property="og:url" content="https://microsoft.com/security" />
-
-$for(author-meta)$
-  <meta name="author" content="$author-meta$" />
-$endfor$
-$if(date-meta)$
-  <meta name="dcterms.date" content="$date-meta$" />
-$endif$
-$if(keywords)$
-  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
-$endif$
-
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-
+  <link rel="stylesheet" href="style.css" />
   <style>
-    :root {
-      --ms-primary: #0078D4;
-      --ms-dark: #001426;
-      --ms-light: #F3F9FD;
-      --body-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    }
     body {
-      font-family: var(--body-font);
-      color: #1b1b1b;
-      background-color: #ffffff;
       margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: #0b1f33;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+      color: #1b1b1b;
+    }
+    aside#nav-pane {
+      background: linear-gradient(180deg, #0b1f33 0%, #0f2e52 100%);
+      color: white;
+      padding: 3rem 2.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 6px 0 24px rgba(0, 0, 0, 0.18);
+    }
+    aside#nav-pane h2 {
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 0;
+      color: rgba(255,255,255,0.85);
+    }
+    aside#nav-pane nav a {
+      display: block;
+      text-decoration: none;
+      color: rgba(255,255,255,0.85);
+      margin: 0.4rem 0;
+      padding: 0.35rem 0;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+    aside#nav-pane nav a:hover {
+      color: #56c6ff;
+      padding-left: 6px;
+    }
+    .main-shell {
+      background: #f5f7fb;
+      display: flex;
+      flex-direction: column;
     }
     header#title-block-header {
-      background: linear-gradient(135deg, var(--ms-primary) 0%, #00A1F1 100%);
+      background: linear-gradient(135deg, #0078D4 0%, #00A1F1 100%);
       color: white;
-      padding: 4rem 12%;
-      text-align: left;
+      padding: 5rem 10vw 4rem;
+      box-shadow: 0 14px 40px rgba(0, 56, 99, 0.28);
     }
     header#title-block-header h1.title {
       margin: 0;
-      font-size: 2.8rem;
+      font-size: 3.2rem;
       font-weight: 600;
+      line-height: 1.2;
     }
     header#title-block-header p.subtitle {
-      margin-top: 1rem;
+      margin-top: 1.2rem;
       font-size: 1.4rem;
+      max-width: 720px;
     }
     header#title-block-header p.author {
       margin-top: 2rem;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.05em;
     }
-    .abstract {
+    .abstract-card {
       background: rgba(255,255,255,0.12);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 2rem;
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-top: 2.4rem;
+      max-width: 760px;
+      backdrop-filter: blur(3px);
     }
     main {
-      padding: 3rem 12%;
-      background-color: #ffffff;
-    }
-    h1, h2, h3, h4 {
-      color: var(--ms-dark);
-    }
-    h1 {
-      margin-top: 3.5rem;
-      border-bottom: 2px solid var(--ms-primary);
-      padding-bottom: 0.5rem;
-    }
-    a {
-      color: var(--ms-primary);
-    }
-    footer {
-      background: var(--ms-light);
-      color: #1b1b1b;
-      text-align: center;
-      padding: 2rem 12%;
-      border-top: 1px solid #d0e3f7;
-    }
-    footer p {
-      margin: 0.5rem 0;
-      font-size: 0.9rem;
-    }
-    table {
-      border-collapse: collapse;
+      padding: 4rem 10vw 5rem;
+      max-width: 1060px;
       width: 100%;
-      margin: 1.5rem 0;
+      align-self: center;
+      margin-top: -80px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 18px 45px rgba(7, 25, 48, 0.14);
     }
-    table th, table td {
-      border: 1px solid #d0e3f7;
-      padding: 0.75rem;
+    footer#page-footer {
+      padding: 2.5rem 10vw;
+      background: #0b1f33;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      margin-top: auto;
     }
-    table th {
-      background-color: var(--ms-light);
-      font-weight: 600;
+    footer#page-footer a { color: #56c6ff; }
+    @media (max-width: 1100px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+      aside#nav-pane {
+        position: relative;
+        height: auto;
+      }
+      main {
+        margin-top: 2rem;
+        border-radius: 12px;
+        box-shadow: none;
+      }
     }
   </style>
-$for(css)$
-  <link rel="stylesheet" href="$css$" />
-$endfor$
-$if(math)$
-  $math$
-  <style>
-    mjx-container[jax="CHTML"], mjx-container[jax="SVG"] {
-      overflow-x: auto;
-      max-width: 100%;
-    }
-  </style>
-$endif$
-$for(header-includes)$
-  $header-includes$
-$endfor$
+  $if(math)$
+    $math$
+    <style>
+      mjx-container[jax="CHTML"], mjx-container[jax="SVG"] {
+        overflow-x: auto;
+        max-width: 100%;
+      }
+    </style>
+  $endif$
 </head>
 <body>
-$for(include-before)$
-$include-before$
-$endfor$
-$if(title)$
-<header id="title-block-header">
-  <h1 class="title">$title$</h1>
-$if(subtitle)$
-  <p class="subtitle">$subtitle$</p>
-$endif$
-$for(author)$
-  <p class="author">$author$</p>
-$endfor$
-$if(abstract)$
-  <div class="abstract">
-    <h2>Abstract</h2>
-    $abstract$
+  <aside id="nav-pane">
+    <h2>Sentinel Whitepaper</h2>
+    <nav>
+      <a href="sentinel.html">Executive Overview</a>
+      $for(include-before)$
+      $include-before$
+      $endfor$
+    </nav>
+  </aside>
+  <div class="main-shell">
+    $if(title)$
+    <header id="title-block-header">
+      <h1 class="title">$title$</h1>
+      $if(subtitle)$
+      <p class="subtitle">$subtitle$</p>
+      $endif$
+      $for(author)$
+      <p class="author">$author$</p>
+      $endfor$
+      $if(abstract)$
+      <div class="abstract-card">
+        <h2>Abstract</h2>
+        $abstract$
+      </div>
+      $endif$
+    </header>
+    $endif$
+    <main>
+      $body$
+    </main>
+    <footer id="page-footer">
+      <p>© 2025 Microsoft Corporation. All rights reserved.</p>
+      <p>Modernizing Security Operations with Microsoft Sentinel</p>
+      <p><a href="https://microsoft.com/security">microsoft.com/security</a></p>
+    </footer>
   </div>
-$endif$
-</header>
-$endif$
-<main>
-$body$
-</main>
-<footer>
-  <p>© 2025 Microsoft Corporation. All rights reserved.</p>
-  <p>Modernizing Security Operations with Microsoft Sentinel</p>
-  <p><a href="https://microsoft.com/security">microsoft.com/security</a></p>
-</footer>
-$for(include-after)$
-$include-after$
-$endfor$
-
   <script src="header-anchors.js" defer></script>
 </body>
 </html>

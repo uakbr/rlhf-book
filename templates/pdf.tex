@@ -212,6 +212,9 @@ $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
 \usepackage{xcolor}
+\definecolor{MSBlue}{HTML}{0078D4}
+\definecolor{MSDark}{HTML}{001426}
+\definecolor{MSLight}{HTML}{F3F9FD}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
@@ -265,7 +268,13 @@ $if(listings)$
   % wrapping
   breaklines=true,
   postbreak=\space,
-  basicstyle=\small\ttfamily
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{MSBlue},
+  stringstyle=\color{MSDark},
+  commentstyle=\color{gray},
+  frame=single,
+  rulecolor=\color{MSLight},
+  backgroundcolor=\color{MSLight}
 }
 $endif$
 $if(lhs)$

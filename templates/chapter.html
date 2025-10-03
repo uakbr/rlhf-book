@@ -16,39 +16,125 @@
       font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       background: #ffffff;
       color: #1b1b1b;
+      display: flex;
+      min-height: 100vh;
     }
-    header {
+    aside.site-nav {
+      width: 260px;
+      background: linear-gradient(180deg, #0b1f33 0%, #0f2e52 100%);
+      color: white;
+      padding: 2.5rem 2rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
+    }
+    aside.site-nav h2 {
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0 0 1.5rem 0;
+    }
+    aside.site-nav nav a {
+      display: block;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      margin-bottom: 0.65rem;
+      font-size: 0.97rem;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+    aside.site-nav nav a:hover {
+      color: #56c6ff;
+      padding-left: 6px;
+    }
+    .content-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f5f7fb;
+    }
+    header.chapter-hero {
       background: linear-gradient(135deg, #0078D4 0%, #00A1F1 100%);
       color: white;
-      padding: 3rem 12%;
+      padding: 4rem 8vw 3rem;
+      box-shadow: 0 8px 20px rgba(0, 56, 99, 0.25);
     }
-    header a { color: white; }
+    header.chapter-hero p.breadcrumb {
+      margin: 0 0 1rem 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+    }
+    header.chapter-hero h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
     main {
-      padding: 3rem 12%;
-      max-width: 900px;
-      margin: 0 auto;
+      padding: 3rem 8vw 4rem;
+      max-width: 960px;
+      width: 100%;
+      align-self: center;
       background: #ffffff;
+      border-radius: 18px;
+      margin-top: -60px;
+      box-shadow: 0 12px 30px rgba(10, 31, 60, 0.12);
     }
     footer {
-      padding: 2rem 12%;
+      padding: 2.5rem 8vw;
       text-align: center;
-      background: #f3f9fd;
-      border-top: 1px solid #d0e3f7;
-      color: #1b1b1b;
+      background: #0b1f33;
+      color: rgba(255,255,255,0.75);
+      margin-top: auto;
+    }
+    footer a { color: #56c6ff; }
+    @media (max-width: 1100px) {
+      body { flex-direction: column; }
+      aside.site-nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        box-shadow: none;
+      }
+      .content-shell {
+        background: #ffffff;
+      }
+      main {
+        margin-top: 2rem;
+        border-radius: 12px;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <p style="margin:0 0 0.5rem 0; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;">Microsoft Sentinel Whitepaper</p>
-    <h1 class="title"><a href="../sentinel.html" style="text-decoration: none;">$title$</a></h1>
-  </header>
-  <main>
-    $body$
-  </main>
-  <footer>
-    <p>© 2025 Microsoft Corporation.</p>
-    <p><a href="https://microsoft.com/security">microsoft.com/security</a></p>
-  </footer>
+  <aside class="site-nav">
+    <h2>Sentinel Playbook</h2>
+    <nav>
+      <a href="../sentinel.html">Overview</a>
+      $if(prev-url)$<a href="$prev-url$.html">← $prev-chapter$</a>$endif$
+      $if(next-url)$<a href="$next-url$.html">$next-chapter$ →</a>$endif$
+    </nav>
+  </aside>
+  <div class="content-shell">
+    <header class="chapter-hero">
+      $if(prev-chapter)$
+      <p class="breadcrumb">$prev-chapter$ → $title$</p>
+      $endif$
+      <h1 class="title">$title$</h1>
+    </header>
+    <main>
+      $body$
+    </main>
+    <footer>
+      <p>© 2025 Microsoft Corporation. All rights reserved.</p>
+      <p>Modernizing Security Operations with Microsoft Sentinel</p>
+      <p><a href="https://microsoft.com/security">microsoft.com/security</a></p>
+    </footer>
+  </div>
 </body>
 </html>

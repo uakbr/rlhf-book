@@ -9,6 +9,13 @@ lang: en-US
 mainlang: english
 otherlang: english
 tags: [microsoft sentinel, siem, soar, cybersecurity, azure]
+subject: Security Operations Modernization
+keywords:
+  - Microsoft Sentinel
+  - SIEM
+  - SOAR
+  - Cybersecurity
+  - Azure
 date: 3 October 2025
 abstract: |
   Security leaders face escalating threats, hybrid estates, and regulatory pressure. Microsoft Sentinel unifies SIEM and SOAR capabilities with AI-driven analytics, automation, and integrated governance. This whitepaper provides executives, SOC managers, and security engineers with a step-by-step blueprint for deploying Sentinel, onboarding telemetry, operationalizing analytics, and demonstrating measurable value.
@@ -20,11 +27,78 @@ linkReferences: true
 link-citations: true
 numbersections: true
 listings: true
+toc-title: Contents
+colorlinks: true
+linkcolor: RoyalBlue
+citecolor: MidnightBlue
+urlcolor: RoyalBlue
+mainfont: "Segoe UI"
+sansfont: "Segoe UI"
+monofont: "Cascadia Code"
 header-includes:
   - |
     ```{=latex}
     \pretocmd{\section}{\newpage}{}{}
+    \usepackage{etoolbox}
     \usepackage{array}
     \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1\textwidth}}
+    \usepackage{titling}
+    \usepackage{fancyhdr}
+    \usepackage{sectsty}
+    \usepackage{enumitem}
+    \usepackage{tocloft}
+    \usepackage{tikz}
+    \definecolor{MSBlue}{HTML}{0078D4}
+    \definecolor{MSDark}{HTML}{001426}
+    \definecolor{MSLight}{HTML}{F3F9FD}
+    \sectionfont{\color{MSDark}\normalfont\Large\bfseries}
+    \subsectionfont{\color{MSBlue}\normalfont\large\bfseries}
+    \subsubsectionfont{\color{MSBlue}\normalfont\normalsize\bfseries}
+    \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+    \renewcommand{\cftsecfont}{\color{MSDark}\bfseries}
+    \renewcommand{\cftsecpagefont}{\color{MSDark}}
+    \setlength{\cftbeforesecskip}{6pt}
+    \setlist{topsep=4pt, itemsep=4pt, leftmargin=1.5em}
+    \setlength{\headheight}{14pt}
+    \fancyhf{}
+    \fancyhead[L]{Modernizing Security Operations with Microsoft Sentinel}
+    \fancyhead[R]{\nouppercase{\leftmark}}
+    \fancyfoot[L]{Microsoft Security Solutions Team}
+    \fancyfoot[C]{\textcolor{MSDark}{© 2025 Microsoft Corporation}}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancypagestyle{plain}{%
+      \fancyhf{}
+      \fancyhead[L]{Modernizing Security Operations with Microsoft Sentinel}
+      \fancyhead[R]{\nouppercase{\leftmark}}
+      \fancyfoot[L]{Microsoft Security Solutions Team}
+      \fancyfoot[R]{\thepage}
+    }
+    \pagestyle{fancy}
+    \AtBeginDocument{\pagestyle{fancy}}
+    \renewcommand{\maketitle}{%
+      \begin{titlepage}
+        \thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+      \path[fill=MSBlue] (current page.north west) rectangle ([yshift=-6cm]current page.north east);
+      \path[fill=MSDark] ([yshift=-6cm]current page.north west) rectangle ([yshift=-6.8cm]current page.north east);
+      \path[fill=MSLight] (current page.south west) rectangle ([yshift=2.5cm]current page.south east);
+    \end{tikzpicture}
+        \begin{center}
+          \vspace*{2.4cm}
+          \includegraphics[width=0.42\textwidth]{images/sentinel-cover.png}\\[1.4cm]
+          {\color{white}\Huge\bfseries Modernizing Security Operations with Microsoft Sentinel\\[0.55cm]}
+          {\color{white}\Large An executive and technical guide to Azure-native SIEM and SOAR transformation}\\[1.5cm]
+        \end{center}
+        \vfill
+        \begin{flushleft}
+          {\Large\bfseries Microsoft Security Solutions Team}\\[0.4cm]
+          {\large October 2025}\\[1.2cm]
+          \textbf{Document Version:} 1.0\\[0.2cm]
+          \textbf{Primary Audience:} CISOs, SOC Directors, Cloud Security Architects\\[0.2cm]
+          \textbf{Classification:} External Release
+        \end{flushleft}
+      \end{titlepage}}
     ```
 ---
