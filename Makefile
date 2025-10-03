@@ -6,16 +6,16 @@
 
 BUILD = build
 MAKEFILE = Makefile
-OUTPUT_FILENAME = book
-OUTPUT_FILENAME_HTML = index
+OUTPUT_FILENAME = sentinel-whitepaper
+OUTPUT_FILENAME_HTML = sentinel
 METADATA = metadata.yml
 CHAPTERS = $(wildcard chapters/*.md) # was CHAPTERS = chapters/*.md
 TOC = --toc --toc-depth 3
 METADATA_ARGS = --metadata-file $(METADATA)
 IMAGES = $(shell find images -type f)
 TEMPLATES = $(shell find templates/ -type f)
-COVER_IMAGE = images/cover.png
-EPUB_COVER_IMAGE = images/rlhf-book-cover.png # EPUB-specific cover image
+COVER_IMAGE = images/sentinel-cover.png
+EPUB_COVER_IMAGE = images/sentinel-cover.png # EPUB-specific cover image
 MATH_FORMULAS = --mathjax # --webtex, is default for PDF/ebook. Consider resetting if issues.
 EPUB_MATH_FORMULAS = --mathml # Use MathML for EPUB format for better e-reader compatibility
 BIBLIOGRAPHY = --bibliography=chapters/bib.bib --citeproc --csl=templates/ieee.csl
@@ -100,7 +100,7 @@ $(info JS files found: $(JS_FILES))
 
 epub:	$(BUILD)/epub/$(OUTPUT_FILENAME).epub
 
-html:	nested_html $(BUILD)/html/$(OUTPUT_FILENAME_HTML).html $(BUILD)/html/library.html
+html:	nested_html $(BUILD)/html/$(OUTPUT_FILENAME_HTML).html
 	
 pdf:	$(BUILD)/pdf/$(OUTPUT_FILENAME).pdf
 
@@ -127,18 +127,10 @@ $(BUILD)/html/$(OUTPUT_FILENAME_HTML).html:	$(HTML_DEPENDENCIES)
 	$(MKDIR_CMD) $(BUILD)/html/c
 	$(CONTENT) | $(CONTENT_FILTERS) | $(PANDOC_COMMAND) $(ARGS) $(HTML_ARGS) -o $@
 	$(COPY_CMD) $(IMAGES) $(BUILD)/html/
-	$(COPY_CMD) templates/nav.js $(BUILD)/html/
 	$(COPY_CMD) templates/header-anchors.js $(BUILD)/html/
-	$(COPY_CMD) templates/nav.js $(BUILD)/html/c/
 	$(COPY_CMD) templates/header-anchors.js $(BUILD)/html/c/
 	cp templates/style.css $(BUILD)/html/style.css || echo "Failed to copy style.css"
-	@mkdir -p $(BUILD)/html/data
-	@test -f data/library.json && cp data/library.json $(BUILD)/html/data/library.json || echo "No library data to copy"
 	$(ECHO_BUILT)
-
-$(BUILD)/html/library.html: templates/library.html
-	$(MKDIR_CMD) $(BUILD)/html
-	cp templates/library.html $@
 
 # Nested HTML build targets
 NESTED_HTML_DIR = $(BUILD)/html/c/
@@ -209,14 +201,12 @@ $(BUILD)/pdf/$(OUTPUT_FILENAME).pdf:	$(PDF_DEPENDENCIES)
 # also copy from build/pdf/book.pdf into build/html/
 # then copy images dir to build/html/chapters/
 files:
-	test -f favicon.ico || (echo "favicon.ico not found" && exit 1)
+	test -f favicon.png || (echo "favicon.png not found" && exit 1)
 	mkdir -p $(BUILD)/html/c/
-	cp favicon.ico $(BUILD)/html/ || echo "Failed to copy to $(BUILD)/html/"
-	cp favicon.ico $(BUILD)/html/c/ || echo "Failed to copy to $(BUILD)/html/c/"
-	cp $(BUILD)/pdf/book.pdf $(BUILD)/html/ || echo "Failed to copy to $(BUILD)/html/"
-	cp $(BUILD)/epub/book.epub $(BUILD)/html/ || echo "Failed to copy EPUB to $(BUILD)/html/"
+	cp favicon.png $(BUILD)/html/ || echo "Failed to copy to $(BUILD)/html/"
+	cp favicon.png $(BUILD)/html/c/ || echo "Failed to copy to $(BUILD)/html/c/"
+	cp $(BUILD)/pdf/$(OUTPUT_FILENAME).pdf $(BUILD)/html/ || echo "Failed to copy to $(BUILD)/html/"
+	cp $(BUILD)/epub/$(OUTPUT_FILENAME).epub $(BUILD)/html/ || echo "Failed to copy EPUB to $(BUILD)/html/"
 	cp -r images $(BUILD)/html/c/ || echo "Failed to copy to $(BUILD)/html/chapters/"
-	cp ./templates/nav.js $(BUILD)/html/ || echo "Failed to copy nav.js to $(BUILD)/html/"
-	cp ./templates/nav.js $(BUILD)/html/c/ || echo "Failed to copy nav.js to $(BUILD)/html/c/"
 	cp ./templates/header-anchors.js $(BUILD)/html/ || echo "Failed to copy header-anchors.js to $(BUILD)/html/"
 	cp ./templates/header-anchors.js $(BUILD)/html/c/ || echo "Failed to copy header-anchors.js to $(BUILD)/html/c/"

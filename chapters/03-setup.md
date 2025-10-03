@@ -1,108 +1,39 @@
 ---
-prev-chapter: "Key Related Works"
+prev-chapter: "Threat Landscape & SOC Challenges"
 prev-url: "02-related-works"
-page-title: Definitions & Background
-next-chapter: "Training Overview"
+page-title: Azure Sentinel Platform Overview
+next-chapter: "Reference Architecture & Key Capabilities"
 next-url: "04-optimization"
 ---
 
-# Definitions & Background
+# Azure Sentinel Platform Overview
 
-This chapter includes all the definitions, symbols, and operations frequently used in the RLHF process and with a quick overview of language models (the common optimization target of this book).
+Microsoft Sentinel is a cloud-native SIEM and SOAR service built on Azure. It combines hyperscale telemetry ingestion with advanced analytics, automation, and investigation tools to modernize security operations.
 
-## Language Modeling Overview
+## Core Components
 
-The majority of modern language models are trained to learn the joint probability distribution of sequences of tokens (words, subwords, or characters) in an autoregressive manner. 
-Autoregression simply means that each next prediction depends on the previous entities in the sequence.
- Given a sequence of tokens $x = (x_1, x_2, \ldots, x_T)$, the model factorizes the probability of the entire sequence into a product of conditional distributions:
+1. **Data Connectors** – Over 200 out-of-the-box connectors ingest telemetry from Microsoft services (Defender, Entra ID, Purview) and third-party solutions (firewalls, EDR, SaaS). Connectors normalize data into the Azure Monitor Log Analytics workspace.
+2. **Analytics Rules** – Prebuilt and custom rules leveraging Kusto Query Language (KQL) detect threats. Built-in templates cover emerging attack scenarios, while the rule wizard accelerates authoring.
+3. **Workbench & Incident Queue** – Sentinel correlates alerts into incidents, providing analyst-friendly workbooks, timeline views, and guided investigation steps.
+4. **Automation (SOAR)** – Playbooks orchestrated through Azure Logic Apps automate response actions, notifications, and evidence gathering.
+5. **Machine Learning & AI** – Fusion, UEBA, anomaly detection, and Security Copilot augment analysts with prioritized incidents and natural language explanations [@microsoftFusionAI; @microsoftCopilotSecurity].
+6. **Threat Intelligence** – Native integration with Microsoft threat intelligence and open TAXII sources enriches detections with actor context.
 
-$$P_{\theta}(x) = \prod_{t=1}^{T} P_{\theta}(x_{t} \mid x_{1}, \ldots, x_{t-1}).$$ {#eq:llming}
+## Platform Differentiators
 
-In order to fit a model that accurately predicts this, the goal is often to maximize the likelihood of the training data as predicted by the current model. 
-To do so we can minimize a negative log-likelihood (NLL) loss:
+- **Cloud Scale:** Elastic ingestion supports bursty workloads without infrastructure management.
+- **Integrated Ecosystem:** Sentinel natively links to Microsoft Defender XDR, Microsoft Entra, Microsoft Purview, and Azure Arc for unified governance.
+- **Open & Extensible:** Connectors, REST APIs, and community content (workbooks, playbooks) enable rapid customization.
+- **Security Analytics Foundation:** Sentinel builds on Azure Monitor’s log analytics engine, offering high-performance KQL queries and centralized governance.
 
-$$\mathcal{L}_{\text{LM}}(\theta)=-\,\mathbb{E}_{x \sim \mathcal{D}}\left[\sum_{t=1}^{T}\log P_{\theta}\left(x_t \mid x_{<t}\right)\right]. $$ {#eq:nll}
+## Licensing & Consumption Model
 
-In practice, one uses a cross-entropy loss with respect to each next-token prediction, computed by comparing the true token in a sequence to what was predicted by the model.
+Sentinel uses consumption-based billing: data ingestion (per GB), automation rules, and AI enrichments. Cost control tactics include commitment tiers, basic logs for low-value data, and incident-based pricing for certain use cases. The TEI study reports 48% cost savings from tool consolidation compared to on-premises SIEM [@forresterTEISentinel2024].
 
-Implementing a language model can take many forms.
-Modern LMs, including ChatGPT, Claude, Gemini, etc., most often use **decoder-only Transformers** [@Vaswani2017AttentionIA].
-The core innovation of the Transformer was heavily utilizing the **self-attention** [@Bahdanau2014NeuralMT] mechanism to allow the model to directly attend to concepts in context and learn complex mappings.
-Throughout this book, particularly when covering reward models in Chapter 7, we will discuss adding new heads or modifying a language modeling (LM) head of the transformer.
-The LM head is a final linear projection layer that maps from the models internal embedding space to the tokenizer space (a.k.a. vocabulary).
-Different heads can be used to re-use the internals of the model and fine-tune it to output differently shaped quantities.
+## Success Prerequisites
 
-## ML Definitions
+- **Azure Tenant Readiness:** Confirm Azure AD/Entra governance, subscription structure, role-based access control (RBAC), and connectivity to critical workloads.
+- **Data Strategy:** Prioritize high-value telemetry (identity, endpoint, network, cloud services) and define retention requirements aligned with compliance mandates.
+- **SOC Process Alignment:** Establish incident response runbooks, escalation pathways, and automation policies that Sentinel playbooks will enforce.
 
-- **Kullback-Leibler (KL) divergence ($D_{KL}(P || Q)$)**, also known as KL divergence, is a measure of the difference between two probability distributions. 
-For discrete probability distributions $P$ and $Q$ defined on the same probability space $\mathcal{X}$, the KL distance from $Q$ to $P$ is defined as:
-
-$$ D_{KL}(P || Q) = \sum_{x \in \mathcal{X}} P(x) \log \left(\frac{P(x)}{Q(x)}\right) $$ {#eq:def_kl}
-
-
-## NLP Definitions
-
-- **Prompt ($x$)**: The input text given to a language model to generate a response or completion.
-
-- **Completion ($y$)**: The output text generated by a language model in response to a prompt. Often the completion is denoted as $y|x$.
-
-- **Chosen Completion ($y_c$)**: The completion that is selected or preferred over other alternatives, often denoted as $y_{chosen}$.
-
-- **Rejected Completion ($y_r$)**: The disfavored completion in a pairwise setting.
-
-- **Preference Relation ($\succ$)**: A symbol indicating that one completion is preferred over another, e.g., $y_{chosen} \succ y_{rejected}$.
-
-- **Policy ($\pi$)**: A probability distribution over possible completions, parameterized by $\theta$: $\pi_\theta(y|x)$.
-
-## RL Definitions
-
-- **Reward ($r$)**: A scalar value indicating the desirability of an action or state, typically denoted as $r$.
-
-- **Action ($a$)**: A decision or move made by an agent in an environment, often represented as $a \in A$, where $A$ is the set of possible actions.
-
-- **State ($s$)**: The current configuration or situation of the environment, usually denoted as $s \in S$, where $S$ is the state space.
-
-- **Trajectory ($\tau$)**: A trajectory $\tau$ is a sequence of states, actions, and rewards experienced by an agent: $\tau = (s_0, a_0, r_0, s_1, a_1, r_1, ..., s_T, a_T, r_T)$. 
-
-- **Trajectory Distribution ($(\tau|\pi)$)**: The probability of a trajectory under policy $\pi$ is $P(\tau|\pi) = p(s_0)\prod_{t=0}^T \pi(a_t|s_t)p(s_{t+1}|s_t,a_t)$, where $p(s_0)$ is the initial state distribution and $p(s_{t+1}|s_t,a_t)$ is the transition probability. 
-
-- **Policy ($\pi$)**, also called the **policy model** in RLHF: In RL, a policy is a strategy or rule that the agent follows to decide which action to take in a given state: $\pi(a|s)$. 
-
-- **Discount Factor ($\gamma$)**: A scalar $0 \le \gamma < 1$ that exponentially down‑weights future rewards in the return, trading off immediacy versus long‑term gain and guaranteeing convergence for infinite‑horizon sums. Sometimes discounting is not used, which is equivalent to $\gamma=1$.
-
-- **Value Function ($V$)**: A function that estimates the expected cumulative reward from a given state: $V(s) = \mathbb{E}[\sum_{t=0}^{\infty} \gamma^t r_t | s_0 = s]$.
-
-- **Q-Function ($Q$)**: A function that estimates the expected cumulative reward from taking a specific action in a given state: $Q(s,a) = \mathbb{E}[\sum_{t=0}^{\infty} \gamma^t r_t | s_0 = s, a_0 = a]$.
-
-- **Advantage Function ($A$)**: The advantage function $A(s,a)$ quantifies the relative benefit of taking action $a$ in state $s$ compared to the average action. It's defined as $A(s,a) = Q(s,a) - V(s)$. Advantage functions (and value functions) can depend on a specific policy, $A^\pi(s,a)$. 
-
-- **Policy-conditioned Values ($[]^{\pi(\cdot)}$)**: Across RL derivations and implementations, a crucial component of the theory and practice is collecting data or values conditioned on a specific policy. Throughout this book we will switch between the simpler notation of value functions et al. ($V,A,Q,G$) and their specific policy-conditioned values ($V^\pi,A^\pi,Q^\pi$). Also crucial in the expected value computation is sampling from data $d$, that is conditioned on a specific policy, $d_\pi$.
-
-- **Expectation of Reward Optimization**: The primary goal in RL, which involves maximizing the expected cumulative reward:
-
-  $$\max_{\theta} \mathbb{E}_{s \sim \rho_\pi, a \sim \pi_\theta}[\sum_{t=0}^{\infty} \gamma^t r_t]$$ {#eq:expect_reward_opt}
-
-  where $\rho_\pi$ is the state distribution under policy $\pi$, and $\gamma$ is the discount factor.
-
-- **Finite Horizon Reward ($J(\pi_\theta)$)**: The expected finite-horizon discounted return of the policy $\pi_\theta$, parameterized by $\theta$  is defined as:
-
-  $$J(\pi_\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left[ \sum_{t=0}^T \gamma^t r_t \right]$$ {#eq:finite_horizon_return}
-  
-  where $\tau \sim \pi_\theta$ denotes trajectories sampled by following policy $\pi_\theta$ and $T$ is the finite horizon.
-
-- **On-policy**: In RLHF, particularly in the debate between RL and Direct Alignment Algorithms, the discussion of **on-policy** data is common. In the RL literature, on-policy means that the data is generated *exactly* by the current form of the agent, but in the general preference-tuning literature, on-policy is expanded to mean generations from that edition of model -- e.g. a instruction tuned checkpoint before running any preference fine-tuning. In this context, off-policy could be data generated by any other language model being used in post-training.
-
-## RLHF Only Definitions
-
-- **Reference Model ($\pi_\text{ref}$)**: This is a saved set of parameters used in RLHF where outputs of it are used to regularize the optimization.
-
-## Extended Glossary
-
-- **Synthetic Data**: This is any training data for an AI model that is the output from another AI system. This could be anything from text generated from a open-ended prompt of a model to a model re-writing existing content.
-- **Distillation**: Distillation is a general set of practices in training AI models where a model is trained on the outputs of a stronger model. This is a type of synthetic data known to make strong, smaller models. Most models make the rules around distillation clear through either the license, for open weight models, or the terms of service, for models accessible only via API. The term distillation is now overloaded with a specific technical definition from the ML literature.
-- **(Teacher-student) Knowledge Distillation**: Knowledge distillation from a specific teacher to student model is a specific type of distillation above and where the term originated. It is a specific deep learning method where a neural network loss is modified to learn from the log-probabilites of the teacher model over multiple potential tokens/logits, instead of learning directly from a chosen output [@hinton2015distilling]. An example of a modern series of models trained with Knowledge Distillation is Gemma 2 [@team2024gemma] or Gemma 3. For a language modeling setup, the next-token loss function can be modified as follows [@agarwal2024policy], where the student model $P_\theta$ learns from the teacher distribution $P_\phi$:
-
-$$\mathcal{L}_{\text{KD}}(\theta) = -\,\mathbb{E}_{x \sim \mathcal{D}}\left[\sum_{t=1}^{T} P_{\phi}(x_t \mid x_{<t}) \log P_{\theta}(x_t \mid x_{<t})\right]. $$ {#eq:knowledge_distillation}
-
-- **In-context Learning (ICL)**: In-context here refers to any information within the context window of the language model. Usually, this is information added to the prompt. The simplest form of in-context learning is adding examples of a similar form before the prompt. Advanced versions can learn which information to include for a specific use-case.
-- **Chain of Thought (CoT)**: Chain of thought is a specific behavior of language models where they are steered towards a behavior that breaks down a problem in a step by step form. The original version of this was through the prompt "Let's think step by step" [@wei2022chain].
+This overview sets the stage for the detailed architecture and rollout guidance in subsequent sections.

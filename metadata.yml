@@ -1,41 +1,30 @@
 ---
-title: Reinforcement Learning from Human Feedback
-subtitle: A short introduction to RLHF and post-training focused on language models.
-biblio-title: Bibliography
-reference-section-title: Bibliography
-author: Nathan Lambert
-rights: CC-BY-NC-SA-4.0
+title: Modernizing Security Operations with Microsoft Sentinel
+subtitle: An executive and technical guide to Azure-native SIEM and SOAR transformation
+biblio-title: References
+reference-section-title: References
+author: Microsoft Security Solutions Team
+rights: "© 2025 Microsoft Corporation. All rights reserved."
 lang: en-US
 mainlang: english
 otherlang: english
-tags: [rlhf, ebook, ai, ml]
-date: 2 July 2025
+tags: [microsoft sentinel, siem, soar, cybersecurity, azure]
+date: 3 October 2025
 abstract: |
-  Reinforcement learning from human feedback (RLHF) has become an important technical and storytelling tool to deploy the latest machine learning systems.
-  In this book, we hope to give a gentle introduction to the core methods for people with some level of quantitative background.
-  The book starts with the origins of RLHF -- both in recent literature and in a convergence of disparate fields of science in economics, philosophy, and optimal control.
-  We then set the stage with definitions, problem formulation, data collection, and other common math used in the literature.
-  The core of the book details every optimization stage in using RLHF, from starting with instruction tuning to training a reward model and finally all of rejection sampling, reinforcement learning, and direct alignment algorithms.
-  The book concludes with advanced topics -- understudied research questions in synthetic data and evaluation -- and open questions for the field.
-# mainfont: DejaVu Sans # not available on Mac
+  Security leaders face escalating threats, hybrid estates, and regulatory pressure. Microsoft Sentinel unifies SIEM and SOAR capabilities with AI-driven analytics, automation, and integrated governance. This whitepaper provides executives, SOC managers, and security engineers with a step-by-step blueprint for deploying Sentinel, onboarding telemetry, operationalizing analytics, and demonstrating measurable value.
 Filter preferences:
   - pandoc-crossref
 geometry:
-  - margin=1.5in # Sets all margins (top, bottom, left, right) equally
+  - margin=1.25in
 linkReferences: true
 link-citations: true
 numbersections: true
-# for better code processing
 listings: true
-# add pages in pdf between chapters
 header-includes:
   - |
     ```{=latex}
-    % Add new page before chapters start
-    \pretocmd{\section}{\newpage}{}{}  
-    % more stable tables in pdf
+    \pretocmd{\section}{\newpage}{}{}
     \usepackage{array}
     \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1\textwidth}}
     ```
 ---
-

@@ -4,19 +4,17 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
 
-  <!-- Add Open Graph meta tags for share image -->
-  <meta property="og:image" content="https://raw.githubusercontent.com/natolambert/rlhf-book/main/images/rlhf-book-share.png" />
-  <meta property="og:image:width" content="1920" />
-  <meta property="og:image:height" content="1080" />
+  <!-- Open Graph metadata -->
+  <meta property="og:image" content="images/sentinel-share.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:title" content="Modernizing Security Operations with Microsoft Sentinel" />
+  <meta property="og:description" content="Executive and technical guidance for deploying Microsoft Sentinel." />
+  <meta property="og:url" content="https://microsoft.com/security" />
 
-  <!-- <meta property="og:title" content="$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$" /> -->
-  <meta property="og:title" content="RLHF Book by Nathan Lambert" />
-  <meta property="og:description" content="The Reinforcement Learning from Human Feedback Book" />
-  <meta property="og:url" content="https://rlhfbook.com" />
-
-  $for(author-meta)$
+$for(author-meta)$
   <meta name="author" content="$author-meta$" />
 $endfor$
 $if(date-meta)$
@@ -25,15 +23,86 @@ $endif$
 $if(keywords)$
   <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
-  <!-- <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title> -->
-   <!-- SEO and Open Graph titles -->
-  <title>
-    RLHF Book by Nathan Lambert
-  </title>
+
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 
   <style>
-    $styles.html()$
-    $style.css()$
+    :root {
+      --ms-primary: #0078D4;
+      --ms-dark: #001426;
+      --ms-light: #F3F9FD;
+      --body-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    body {
+      font-family: var(--body-font);
+      color: #1b1b1b;
+      background-color: #ffffff;
+      margin: 0;
+    }
+    header#title-block-header {
+      background: linear-gradient(135deg, var(--ms-primary) 0%, #00A1F1 100%);
+      color: white;
+      padding: 4rem 12%;
+      text-align: left;
+    }
+    header#title-block-header h1.title {
+      margin: 0;
+      font-size: 2.8rem;
+      font-weight: 600;
+    }
+    header#title-block-header p.subtitle {
+      margin-top: 1rem;
+      font-size: 1.4rem;
+    }
+    header#title-block-header p.author {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+    .abstract {
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    main {
+      padding: 3rem 12%;
+      background-color: #ffffff;
+    }
+    h1, h2, h3, h4 {
+      color: var(--ms-dark);
+    }
+    h1 {
+      margin-top: 3.5rem;
+      border-bottom: 2px solid var(--ms-primary);
+      padding-bottom: 0.5rem;
+    }
+    a {
+      color: var(--ms-primary);
+    }
+    footer {
+      background: var(--ms-light);
+      color: #1b1b1b;
+      text-align: center;
+      padding: 2rem 12%;
+      border-top: 1px solid #d0e3f7;
+    }
+    footer p {
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1.5rem 0;
+    }
+    table th, table td {
+      border: 1px solid #d0e3f7;
+      padding: 0.75rem;
+    }
+    table th {
+      background-color: var(--ms-light);
+      font-weight: 600;
+    }
   </style>
 $for(css)$
   <link rel="stylesheet" href="$css$" />
@@ -41,24 +110,15 @@ $endfor$
 $if(math)$
   $math$
   <style>
-    /* Target all possible MathJax display containers */
-    .MathJax_Display, .MJXc-display, .math.display, mjx-container[jax="CHTML"][display="true"], mjx-container[jax="SVG"][display="true"] {
+    mjx-container[jax="CHTML"], mjx-container[jax="SVG"] {
       overflow-x: auto;
       max-width: 100%;
-      padding: 0.5em 0;
     }
   </style>
 $endif$
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 $for(header-includes)$
   $header-includes$
 $endfor$
-
-<!-- custom js nav -->
-<script src="nav.js" defer></script>
-
 </head>
 <body>
 $for(include-before)$
@@ -66,62 +126,33 @@ $include-before$
 $endfor$
 $if(title)$
 <header id="title-block-header">
-<h1 class="title">$title$</h1>
+  <h1 class="title">$title$</h1>
 $if(subtitle)$
-<p class="subtitle">$subtitle$</p>
+  <p class="subtitle">$subtitle$</p>
 $endif$
 $for(author)$
-<p class="author">$author$</p>
+  <p class="author">$author$</p>
 $endfor$
-<navigation-dropdown expanded="true"></navigation-dropdown>
-
 $if(abstract)$
-<div class="abstract">
-  <h2>Abstract</h2>
-  $abstract$
-</div>
+  <div class="abstract">
+    <h2>Abstract</h2>
+    $abstract$
+  </div>
 $endif$
 </header>
 $endif$
-  <section id="changelog" style="padding: 20px; text-align: center;">
-    <h2>Changelog</h2>
-    <p><strong>2 July 2025 </strong>: Add tool use chapter (see <a href="https://github.com/natolambert/rlhf-book/pull/122">PR</a>)</p>
-    <p><strong>6 June 2025 </strong>: v1.1. Lots of RLVR/reasoning improvements (see <a href="https://github.com/natolambert/rlhf-book/pull/120">PR</a>)</p>
-    <p><strong>14 Apr. - 16 Apr. 2025 </strong>: Finish v0. Overoptimization, open questions, etc. </p>
-    <p><strong>6 Apr. - 12 Apr. 2025.</strong>: Evaluation section </p>
-    <p><strong>28 Mar. - 5 Apr. 2025.</strong>: Research on RLHF x Product, cleaning, improving website, reasoning section </p>
-    <p><strong>17 Mar. - 27 Mar 2025.</strong>: Improving policy gradient section, minor changes </p>
-    <p><strong>6 Mar. - 16 Mar 2025.</strong>: Finish DPO, major cleaning </p>
-    <p><strong>26 Feb. - 5 Mar 2025.</strong>: Start DPO chapter, improve intro </p>
-    <p><strong>20-25 Feb. 2025</strong>: Improve SEO, add IFT chapter, minor edits </p>
-    <p><strong>10-15 Feb. 2025</strong>: RM additions, preference data, cleaning, policy gradient finalization </p>
-    <p><strong>8 Feb. 2025</strong>: RM additions, editing, cleaning </p>
-    <p><strong>4 Feb. 2025</strong>: PPO and GAE </p>
-    <p><strong>2 Feb. 2025</strong>: Added changelog, revamped introduction, </p>
-  </section>
-  <section id="acknowledgements" style="padding: 20px; text-align: center;">
-    <h2>Acknowledgements</h2>
-    <p>I would like to thank the following people who helped me directly with this project: Costa Huang, (and of course Claude). Indirect shout-outs go to Ross Taylor, Hamish Ivison, John Schulman, Valentina Pyatkin, Daniel Han, Shane Gu, Joanne Jang, LJ Miranda, and others in my RL sphere.</p>
-    <p>Additionally, thank you to the <a href="https://github.com/natolambert/rlhf-book/graphs/contributors">contributors on GitHub</a> who helped improve this project.</p>
-  </section>
-  <footer style="padding: 20px; text-align: center;">
-    <hr>
-    Citation <br>
-    <div style="text-align: left; font-size: small; color: #888;">
-      @book{rlhf2024,<br>
-      &nbsp;&nbsp;author = {Nathan Lambert},<br>
-      &nbsp;&nbsp;title = {Reinforcement Learning from Human Feedback},<br>
-      &nbsp;&nbsp;year = {2025},<br>
-      &nbsp;&nbsp;publisher = {Online},<br>
-      &nbsp;&nbsp;url = {https://rlhfbook.com}<br>      }
-    </div>
-    <div>
-      <a href="https://github.com/natolambert/rlhf-book" target="_blank">
-        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width: 40px; height: 40px;">
-      </a>
-      <!-- Add more social links here -->
-    </div>
-    <p>&copy; 2024 Nathan Lambert</p>
-  </footer>  
+<main>
+$body$
+</main>
+<footer>
+  <p>© 2025 Microsoft Corporation. All rights reserved.</p>
+  <p>Modernizing Security Operations with Microsoft Sentinel</p>
+  <p><a href="https://microsoft.com/security">microsoft.com/security</a></p>
+</footer>
+$for(include-after)$
+$include-after$
+$endfor$
+
+  <script src="header-anchors.js" defer></script>
 </body>
 </html>
